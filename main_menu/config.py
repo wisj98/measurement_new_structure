@@ -21,14 +21,18 @@ def check_web(id, password):
 
 def check_pickle():
     try:
-        with open("config.pickle","rb") as fr:
+        with open("config.pickle", "rb") as fr:
             config = pickle.load(fr)
-        if os.path.exists(config["BOM 경로"]) == False:
-            config["BOM 경로"]=""
-            pickle.dump(config, f)
-        if os.path.exists(config["내역 경로"]) == False:
-            config["내역 경로"] =""
-            pickle.dump(config, f)
+        updated = False
+        if not os.path.exists(config.get("BOM 경로", "")):
+            config["BOM 경로"] = ""
+            updated = True
+        if not os.path.exists(config.get("내역 경로", "")):
+            config["내역 경로"] = ""
+            updated = True
+        if updated:
+            with open("config.pickle", "wb") as fw:
+                pickle.dump(config, fw)
     except:
         config = {
                   "BOM 경로":"",
@@ -48,7 +52,6 @@ def root(which):
     root_ = ctk.CTk()
     root_.geometry("700x150")
     root_.title(f"{which} 설정")
-
     config = check_pickle()
 
     path_label = ctk.CTkLabel(root_, text=f"현재 경로:\n{config[f"{which}"]}", wraplength=350, font=read_font(14), width=600)
