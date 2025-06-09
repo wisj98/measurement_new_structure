@@ -6,8 +6,8 @@ from datetime import datetime
 import operator
 from datetime import datetime
 
-# try: from measuring import measuring
-# except: from main_menu.measuring import measuring
+try: from measuring import measuring
+except: from main_menu.measuring import measuring
 
 try: from read import read_recipe, format_number, read_font
 except: from main_menu.read import read_recipe, format_number, read_font
@@ -19,7 +19,11 @@ def measurement_start(who):
 
     data_path = config["내역 경로"] + "/data"
     if not os.path.exists(data_path):
-        os.makedirs(data_path)
+        try:os.makedirs(data_path)
+        except:
+            config["내역 경로"] = ""
+            data_path = config["내역 경로"] + "/data"
+            os.makedirs(data_path)
     today = datetime.today().strftime("%Y_%m_%d")
     file_name = data_path + "/" + today + "_작업지시.csv"
 
@@ -251,7 +255,7 @@ def work(order, who):
     update_time()
 #------------------------------------------------------------------------------------------------
     info_frame = ctk.CTkFrame(window, height = 400, fg_color="#BBBBBB", corner_radius=0, width=1500)
-    info_frame.pack(side="top",pady=[0,5], fill=None)
+    info_frame.pack(side="top",pady=[30,30], fill=None)
 
     width = [300,300,300,500,300]
     headers = ["작업일", "지시 시간", "제품명", "작업량(g)"]
@@ -459,7 +463,11 @@ def work(order, who):
 
         data_path = config["내역 경로"] + "/data"
         if not os.path.exists(data_path):
-            os.makedirs(data_path)
+            try:os.makedirs(data_path)
+            except:
+                config["내역 경로"] = ""
+                data_path = config["내역 경로"] + "/data"
+                os.makedirs(data_path)
 
         today = datetime.today().strftime("%Y_%m_%d")
         file_name = data_path + "/" + today + "_작업지시.csv"
@@ -494,13 +502,13 @@ def work(order, who):
 #------------------------------------------------------------------------------------------------
     buttons_frame = ctk.CTkFrame(master=window, height=100)
     buttons_frame.pack(side="top",pady=[5,5], fill="x")
-    worker = ctk.CTkLabel(master=buttons_frame, text=f"작업자: {who}", height=100, width=450, font=read_font(size=12))
+    worker = ctk.CTkLabel(master=buttons_frame, text=f"작업자: {who}", height=100, width=450, font=read_font(size=40))
     worker.pack(side="left",padx=15,fill="x")
-    save_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="전체 칭량 완료", font=read_font(size=12), command=lambda:save(order, who, now_labels))
+    save_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="전체 칭량 완료", font=read_font(size=40), command=lambda:save(order, who, now_labels))
     save_button.pack(side="left",padx=15,fill="x")
-    cancel_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="칭량 취소", font=read_font(size=12), command=window.destroy)
+    cancel_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="칭량 취소", font=read_font(size=40), command=window.destroy)
     cancel_button.pack(side="left",padx=15,fill="x")
-    history_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="칭량작업 기록서", font=read_font(size=12), command=lambda:history(order, now_labels, who))
+    history_button = ctk.CTkButton(master=buttons_frame, height=100, width=450, text="칭량작업 기록서", font=read_font(size=40), command=lambda:history(order, now_labels, who))
     history_button.pack(side="left",padx=15,fill="x")
 
     window.mainloop()

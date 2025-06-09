@@ -4,6 +4,9 @@ from tkinter import filedialog
 import tkinter as tk
 import pandas as pd
 from datetime import datetime
+try: from read import read_font
+except: from main_menu.read import read_font
+import os
 
 def check_web(id, password):
     url = "https://raw.githubusercontent.com/wisj98/measurement_web/main/test.csv"
@@ -20,6 +23,12 @@ def check_pickle():
     try:
         with open("config.pickle","rb") as fr:
             config = pickle.load(fr)
+        if os.path.exists(config["BOM 경로"]) == False:
+            config["BOM 경로"]=""
+            pickle.dump(config, f)
+        if os.path.exists(config["내역 경로"]) == False:
+            config["내역 경로"] =""
+            pickle.dump(config, f)
     except:
         config = {
                   "BOM 경로":"",
@@ -42,7 +51,7 @@ def root(which):
 
     config = check_pickle()
 
-    path_label = ctk.CTkLabel(root_, text=f"현재 경로:\n{config[f"{which}"]}", wraplength=350, font=("Pretendard Medium", 14, "bold"), width=600)
+    path_label = ctk.CTkLabel(root_, text=f"현재 경로:\n{config[f"{which}"]}", wraplength=350, font=read_font(14), width=600)
     path_label.pack(pady=20, padx=10)
 
     def set_new_path():
@@ -53,7 +62,7 @@ def root(which):
             with open("config.pickle","wb") as f:
                 pickle.dump(config, f)
     
-    set_path_button = ctk.CTkButton(root_, text="새로운 경로 지정", command=set_new_path, font=("Pretendard Medium", 14, "bold"))
+    set_path_button = ctk.CTkButton(root_, text="새로운 경로 지정", command=set_new_path, font=read_font(14))
     set_path_button.pack(pady=10)
 
     root_.mainloop()
@@ -236,14 +245,14 @@ def config():
     window.geometry("600x600+0+0")
     window.title("환경 설정")
 
-    ctk.CTkButton(master=window, text="BOM 경로 관리", command=lambda:root("BOM 경로"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=(20,10), padx=20)
-    ctk.CTkButton(master=window, text="내역 경로 관리", command=lambda:root("내역 경로"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="작업 지시자 등록", command=lambda:worker("작업 지시자"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="칭량 작업자 등록", command=lambda:worker("칭량 작업자"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="배합 작업자 등록", command=lambda:worker("배합 작업자"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="관리자 등록", command=lambda:worker("관리자"), height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="배합 가마명 등록", command=gama, height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
-    ctk.CTkButton(master=window, text="작업 전 점검사항 등록", command=check_list, height =50, width = 300, font=("Pretendard Medium", 14, "bold")).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="BOM 경로 관리", command=lambda:root("BOM 경로"), height =50, width = 300, font=read_font(14)).pack(pady=(20,10), padx=20)
+    ctk.CTkButton(master=window, text="내역 경로 관리", command=lambda:root("내역 경로"), height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="작업 지시자 등록", command=lambda:worker("작업 지시자"), height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="칭량 작업자 등록", command=lambda:worker("칭량 작업자"), height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="배합 작업자 등록", command=lambda:worker("배합 작업자"), height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="관리자 등록", command=lambda:worker("관리자"), height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="배합 가마명 등록", command=gama, height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
+    ctk.CTkButton(master=window, text="작업 전 점검사항 등록", command=check_list, height =50, width = 300, font=read_font(14)).pack(pady=10, padx=20)
 
     window.mainloop()
 

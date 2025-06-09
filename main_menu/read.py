@@ -33,7 +33,7 @@ def read_code(path):
 
         for _, row in df.iterrows():
             if row["바코드(원료코드)"] not in code_dict.keys():
-                code_dict[row["바코드(원료코드)"]] = row["원료명"]
+                code_dict[str(row["바코드(원료코드)"])] = row["원료명"]
         
     return code_dict
 

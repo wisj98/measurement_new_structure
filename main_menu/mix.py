@@ -3,8 +3,6 @@ import pickle
 import pandas as pd
 import os
 from datetime import datetime
-import time
-from datetime import datetime
 
 try: from read import read_recipe, format_number, read_font
 except: from main_menu.read import read_recipe, format_number, read_font
@@ -16,7 +14,11 @@ def mix_start(who):
 
     data_path = config["내역 경로"] + "/data"
     if not os.path.exists(data_path):
-        os.makedirs(data_path)
+        try:os.makedirs(data_path)
+        except:
+            config["내역 경로"] = ""
+            data_path = config["내역 경로"] + "/data"
+            os.makedirs(data_path)
     today = datetime.today().strftime("%Y_%m_%d")
     file_name = data_path + "/" + today + "_작업지시.csv"
 
@@ -294,7 +296,7 @@ def work(order, who):
         wait = round(wait)
         if wait != 0:
             waitings[row].configure(text=f"{wait//60}:{(wait%60)}", fg_color="lightyellow")
-            mix_buttons[row].configure(fg_color="lightyellow")
+            mix_buttons[row].configure(fg_color="lightyellow", command = None)
             window.after(1000, lambda: toggle(wait-1, row))
         else:
             waitings[row].configure(text=f"{wait//60}:{(wait%60)}", fg_color="lightgreen")
@@ -362,7 +364,11 @@ def work(order, who):
 
             data_path = config["내역 경로"] + "/data"
             if not os.path.exists(data_path):
-                os.makedirs(data_path)
+                try:os.makedirs(data_path)
+                except:
+                    config["내역 경로"] = ""
+                    data_path = config["내역 경로"] + "/data"
+                    os.makedirs(data_path)
 
             today = datetime.today().strftime("%Y_%m_%d")
             file_name = data_path + "/" + today + "_작업지시.csv"
@@ -413,7 +419,7 @@ def work(order, who):
             popup.grab_set()
         except:
             def on_confirm():
-                window.destroy()
+                popup.destroy()
 
             popup = ctk.CTkToplevel(window)
             popup.title("알림")

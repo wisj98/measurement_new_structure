@@ -15,7 +15,11 @@ def order_start(who):
 
     data_path = config["내역 경로"] + "/data"
     if not os.path.exists(data_path):
-        os.makedirs(data_path)
+        try:os.makedirs(data_path)
+        except:
+            config["내역 경로"] = ""
+            data_path = config["내역 경로"] + "/data"
+            os.makedirs(data_path)
     today = datetime.today().strftime("%Y_%m_%d")
     file_name = data_path + "/" + today + "_작업지시.csv"
     if os.path.isfile(file_name):
@@ -140,13 +144,13 @@ def order_start(who):
 
         for r, row in enumerate(recipe["배합"], start=1):
             for c, val in enumerate(row):
-                label = ctk.CTkLabel(scrollable_frame2, text=str(val), font=read_font(size=12, bold=False), width = widths[c], fg_color="darkgrey")
+                label = ctk.CTkLabel(scrollable_frame2, text=str(val), font=read_font(size=12), width = widths[c], fg_color="darkgrey")
                 label.grid(row=r, column=c,padx=1, pady=1, sticky="w")
 
         # -------------------- 기타 정보 탭 --------------------
         tab3 = tabview.add("기타")
         info_text = "\n".join(recipe["기타 정보"])
-        info_label = ctk.CTkLabel(tab3, text=info_text, anchor="w", justify="left", font=read_font(size=12, bold=False))
+        info_label = ctk.CTkLabel(tab3, text=info_text, anchor="w", justify="left", font=read_font(size=12))
         info_label.pack(anchor="w", padx=20, pady=20)
 
         window.mainloop()

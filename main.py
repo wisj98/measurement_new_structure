@@ -14,7 +14,7 @@ from main_menu.config import config, check_web, check_pickle
 import os
 import sys
 from PIL import Image
-from main_menu.read import read_recipe, format_number, read_font
+from main_menu.read import read_font
 
 BASE_DIR = os.path.dirname(sys.executable)
 
@@ -27,7 +27,7 @@ def login():
         app.destroy()
         main_menu()
     else:
-        popup = ctk.CTk()
+        popup = ctk.CTkToplevel()
         popup.title("로그인 실패")
         popup.geometry("600x300")
         
@@ -36,8 +36,6 @@ def login():
         
         button = ctk.CTkButton(popup, text="확인", command=popup.destroy)
         button.pack(pady=10)
-
-        popup.mainloop()
 
 def worker_login(which):
     config_ = check_pickle()
@@ -50,7 +48,7 @@ def worker_login(which):
         username = entry_username.get()
         password = entry_password.get()
 
-        if username in workers.keys() and workers[username] == password:
+        if username in workers and workers[username] == password:
             msgbox.showinfo("로그인 성공", f"{username}님 환영합니다.")
             next_action = {
             "관리자": config,
